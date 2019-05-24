@@ -16,10 +16,16 @@
 
 package camaral.gatling.smtp
 
-import camaral.gatling.smtp.protocol.SmtpProtocolBuilder
-import io.gatling.core.config.GatlingConfiguration
+import io.gatling.core.Predef._
+import camaral.gatling.smtp.Predef._
 
-trait SmtpDsl
-{
-  def smtp(implicit configuration: GatlingConfiguration) = SmtpProtocolBuilder(configuration)
+
+class TestSmtpDsl extends Simulation {
+  val smtpProtocol = smtp
+    .useSsl()
+
+  val scn = scenario("Simple scenario")
+  //.exec(null) // TODO: add action
+
+  setUp(scn.inject(atOnceUsers(1))).protocols(smtpProtocol)
 }

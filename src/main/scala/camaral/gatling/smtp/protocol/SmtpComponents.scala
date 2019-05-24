@@ -16,12 +16,12 @@
 
 package camaral.gatling.smtp.protocol
 
-case object SmtpProtocolBuilderBase
-{
+import io.gatling.core.protocol.ProtocolComponents
+import io.gatling.core.session.Session
 
-}
+case class SmtpComponents(smtpProtocol: SmtpProtocol) extends ProtocolComponents {
 
-case class SmtpProtocolBuilderBase()
-{
+  override def onStart: Session => Session = ProtocolComponents.NoopOnStart
 
+  override def onExit: Session => Unit = ProtocolComponents.NoopOnExit
 }
