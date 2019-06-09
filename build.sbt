@@ -5,6 +5,7 @@ ThisBuild / version := "0.1.0-SNAPSHOT"
 ThisBuild / organization := "camaral"
 ThisBuild / organizationName := "camaral"
 
+enablePlugins(GatlingPlugin)
 
 lazy val root = (project in file("."))
     .settings(

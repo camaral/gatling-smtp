@@ -14,15 +14,18 @@
  * limitations under the License.
  */
 
-package camaral.gatling.smtp
+import camaral.gatling.smtp.Predef._
+import io.gatling.core.Predef._
 
-import camaral.gatling.smtp.action.SmtpActionBuilder
-import camaral.gatling.smtp.protocol.SmtpProtocolBuilder
-import io.gatling.core.config.GatlingConfiguration
 
-trait SmtpDsl
-{
-  def smtp(implicit configuration: GatlingConfiguration) = SmtpProtocolBuilder(configuration)
+class SmtpDslSimulation extends Simulation {
+  val smtpProtocol = smtp
+    .useSsl()
 
-  def smtp(requestName: String) = new SmtpActionBuilder(requestName, null, null, null, null)
+  val scn = scenario("Simple scenario")
+    .exec(smtp("My First Request")
+      .subject("A new Email")
+      .body("Here goes the body"))
+
+  setUp(scn.inject(atOnceUsers(1))).protocols(smtpProtocol)
 }
