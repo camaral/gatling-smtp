@@ -8,7 +8,7 @@
 		<immediateFlush>false</immediateFlush>
 	</appender>
 
-	<root level="TRACE">
+	<root level="INFO">
 		<appender-ref ref="CONSOLE" />
 	</root>
 

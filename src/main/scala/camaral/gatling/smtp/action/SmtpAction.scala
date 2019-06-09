@@ -27,8 +27,8 @@ object SmtpAction {
   def props(requestName: String,
             from: String,
             to: String,
-            subject: Expression[String],
-            body: Expression[String],
+            subject: String,
+            body: String,
             statsEngine: StatsEngine,
             next: Action,
             protocol: SmtpProtocol) =
@@ -38,8 +38,8 @@ object SmtpAction {
 class SmtpAction(requestName: String,
                  from: String,
                  to: String,
-                 subject: Expression[String],
-                 body: Expression[String],
+                 subject: String,
+                 body: String,
                  val statsEngine: StatsEngine,
                  val next: Action,
                  protocol: SmtpProtocol) extends ChainableAction with Actor {
@@ -55,33 +55,15 @@ class SmtpAction(requestName: String,
   private def generateSendMailRequest(session: Session) = {
     def readSession(variableName: String) = session(variableName).as[String]
 
-    for {
-      resolvedBody <- body(session).map(String.valueOf)
-      resolvedSubject <- subject(session).map(String.valueOf)
-    } yield {
-
-      SendMailRequest(
-        session,
-        protocol.host,
-        protocol.port,
-        protocol.ssl,
-        from,
-        to,
-        resolvedBody,
-        resolvedSubject,
-        None) // TODO: come from Feeder
-
-    }
-
     SendMailRequest(
       session,
       protocol.host,
       protocol.port,
       protocol.ssl,
-      "",
-      "",
-      "",
-      "",
+      from,
+      to,
+      subject,
+      body,
       None) // TODO: come from Feeder
   }
 

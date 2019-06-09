@@ -17,6 +17,7 @@
 package camaral.gatling.smtp.action
 
 import camaral.gatling.smtp.protocol.{SmtpComponents, SmtpProtocol}
+import com.typesafe.scalalogging.Logger
 import io.gatling.core.action.builder.ActionBuilder
 import io.gatling.core.action.{Action, ExitableActorDelegatingAction}
 import io.gatling.core.session.Expression
@@ -26,16 +27,16 @@ import io.gatling.core.util.NameGen
 case class SmtpActionBuilder(requestName: String,
                              _from: String,
                              _to: String,
-                             _subject: Expression[String],
-                             _body: Expression[String]) extends ActionBuilder with NameGen {
+                             _subject: String,
+                             _body: String) extends ActionBuilder with NameGen {
 
-  def from(from: String): SmtpActionBuilder = copy(_from, from)
+  def from(from: String): SmtpActionBuilder = copy(_from = from)
 
-  def to(to: String): SmtpActionBuilder = copy(_to, to)
+  def to(to: String): SmtpActionBuilder = copy(_to = to)
 
-  def subject(subject: Expression[String]) = copy(_subject = subject)
+  def subject(subject: String) = copy(_subject = subject)
 
-  def body(body: Expression[String]) = copy(_body = body)
+  def body(body: String) = copy(_body = body)
 
   override def build(ctx: ScenarioContext, next: Action): Action = {
     val components: SmtpComponents = ctx.protocolComponentsRegistry.components(SmtpProtocol.SmtpProtocolKey)
