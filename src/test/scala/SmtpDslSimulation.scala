@@ -15,16 +15,20 @@
  */
 
 import camaral.gatling.smtp.Predef._
+import com.typesafe.scalalogging.Logger
 import io.gatling.core.Predef._
 
 
 class SmtpDslSimulation extends Simulation {
   val smtpProtocol = smtp
-    .useSsl()
+    .host("localhost")
+    .port(1025)
 
   val scn = scenario("Simple scenario")
     .exec(smtp("My First Request")
-      .subject("A new Email")
+        .from("edson.pele@example.com")
+        .to("diego.maradona@example.com")
+      .subject("Pele > Maradona")
       .body("Here goes the body"))
 
   setUp(scn.inject(atOnceUsers(1))).protocols(smtpProtocol)
